@@ -9,8 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 @Setter
 @Getter
 @Entity
-@Table(name = "tbl_users")
-public class UserEntity {
+@Table(name = "tbl_addresses")
+public class AddressEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -20,10 +20,14 @@ public class UserEntity {
     @Column
     private Long version;
 
-    @Column(name = "user_id")
-    private String userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private UserEntity userEntity;
+
+    @Column(name = "address_id")
+    private String addressId;
 
     @Column
-    private String name;
+    private String addressLine;
 
 }
