@@ -2,6 +2,7 @@ package com.siukatech.poc.spring.jpa.demo.repository;
 
 import com.siukatech.poc.spring.jpa.demo.entity.AddressEntity;
 import com.siukatech.poc.spring.jpa.demo.entity.UserEntity;
+import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Subquery;
@@ -269,6 +270,43 @@ public class AddressRepositoryTests {
         // then
         assertThat(addressEntityList.size()).isEqualTo(3);
 
+    }
+
+    @Test
+    public void test_addressSpec_delete_basic() {
+        // given
+        List<UserEntity> userEntityList = this.userRepository.findAll();
+        log.debug("test_addressSpec_delete_basic - userEntityList: [{}]", userEntityList);
+        userEntityList.forEach(userEntity -> {
+            log.debug("test_addressSpec_delete_basic - userEntity: [{}]", userEntity);
+        });
+        List<AddressEntity> addressEntityList = this.addressRepository.findAll();
+        log.debug("test_addressSpec_delete_basic - userEntityList: [{}]", addressEntityList);
+        addressEntityList.forEach(addressEntity -> {
+            log.debug("test_addressSpec_delete_basic - addressEntity: [{}]", addressEntity);
+        });
+        Long userId = userEntityList.getFirst().getId();
+        Long addressId = addressEntityList.getLast().getId();
+        log.debug("test_addressSpec_delete_basic - userId: [{}], addressId: [{}]", userId, addressId);
+        UserEntity userEntity = this.userRepository.findById(userId).orElseThrow();
+        AddressEntity addressEntity = this.addressRepository.findById(addressId).orElseThrow();
+        Specification<AddressEntity> addressSpec = ((root, query, cb) -> {
+            Predicate predicate = null;
+            Path<String> path = null;
+//            path = root.get("userEntity").get("userId");
+//            predicate = cb.equal(path, userEntity.getUserId());
+            path = root.get("userId");
+            predicate = cb.equal(path, userEntity.getUserId());
+            return predicate;
+        });
+
+        // when
+        addressEntity.setAddressLine(addressEntity.getAddressLine() + "_updated");
+        Long deleted = this.addressRepository.delete(addressSpec);
+        log.debug("test_addressSpec_delete_basic - deleted: [{}]", deleted);
+
+        // then
+        assertThat(deleted).isGreaterThan(0L);
     }
 
 }
