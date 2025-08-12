@@ -1,9 +1,7 @@
-package com.siukatech.poc.spring.jpa.demo.repository;
+package com.siukatech.poc.spring.jpa.demo.simple.repository;
 
-import com.siukatech.poc.spring.jpa.demo.entity.UserEntity;
+import com.siukatech.poc.spring.jpa.demo.simple.entity.UserEntity;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,7 @@ import java.util.Objects;
 @TestPropertySource(properties = {
         "logging.level.org.hibernate.SQL=DEBUG"
         , "logging.level.org.hibernate.orm.jdbc.bind=TRACE"
-        , "logging.level.com.siukatech.poc.spring.jpa.demo.repository=DEBUG"
+        , "logging.level.com.siukatech.poc.spring.jpa.demo=DEBUG"
 })
 public class UserRepositoryTests {
 

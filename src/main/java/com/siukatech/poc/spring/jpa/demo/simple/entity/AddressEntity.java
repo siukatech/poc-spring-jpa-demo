@@ -1,4 +1,4 @@
-package com.siukatech.poc.spring.jpa.demo.entity;
+package com.siukatech.poc.spring.jpa.demo.simple.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -25,10 +25,10 @@ public class AddressEntity {
     private Long version;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "user_id2", referencedColumnName = "user_id")
     private UserEntity userEntity;
 
-    @Column(name = "user_id", insertable = false, updatable = false)
+    @Column(name = "user_id2", insertable = false, updatable = false)
     private String userId;
 
     @Column(name = "address_id")

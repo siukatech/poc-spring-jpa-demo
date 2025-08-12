@@ -1,15 +1,11 @@
-package com.siukatech.poc.spring.jpa.demo.repository;
+package com.siukatech.poc.spring.jpa.demo.simple.repository;
 
-import com.siukatech.poc.spring.jpa.demo.entity.AddressEntity;
-import com.siukatech.poc.spring.jpa.demo.entity.UserEntity;
+import com.siukatech.poc.spring.jpa.demo.simple.entity.AddressEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @Repository
 public interface AddressRepository extends JpaRepository<AddressEntity, Long>, JpaSpecificationExecutor<AddressEntity> {

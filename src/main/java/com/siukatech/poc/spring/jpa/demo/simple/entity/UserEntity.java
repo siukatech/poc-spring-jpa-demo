@@ -1,4 +1,4 @@
-package com.siukatech.poc.spring.jpa.demo.entity;
+package com.siukatech.poc.spring.jpa.demo.simple.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

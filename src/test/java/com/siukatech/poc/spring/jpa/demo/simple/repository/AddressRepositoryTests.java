@@ -1,7 +1,9 @@
-package com.siukatech.poc.spring.jpa.demo.repository;
+package com.siukatech.poc.spring.jpa.demo.simple.repository;
 
-import com.siukatech.poc.spring.jpa.demo.entity.AddressEntity;
-import com.siukatech.poc.spring.jpa.demo.entity.UserEntity;
+import com.siukatech.poc.spring.jpa.demo.simple.entity.AddressEntity;
+import com.siukatech.poc.spring.jpa.demo.simple.entity.UserEntity;
+import com.siukatech.poc.spring.jpa.demo.simple.repository.AddressRepository;
+import com.siukatech.poc.spring.jpa.demo.simple.repository.UserRepository;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
@@ -31,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         , "logging.level.org.hibernate.orm.jdbc.bind=TRACE"
         , "logging.level.org.hibernate.SQL=DEBUG"
         , "logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE"
-        , "logging.level.com.siukatech.poc.spring.jpa.demo.repository=DEBUG"
+        , "logging.level.com.siukatech.poc.spring.jpa.demo=DEBUG"
 
 })
 public class AddressRepositoryTests {
