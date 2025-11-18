@@ -34,7 +34,16 @@ dependencies {
 
 	implementation 'org.javatuples:javatuples:1.2'
 
-	implementation "org.projectlombok:lombok:${lombokVersion}"
+////    implementation 'org.hibernate:hibernate-core:6.6.8.Final'
+////    implementation 'org.hibernate:hibernate-core:6.5.3.Final'
+//    implementation("org.hibernate:hibernate-core") {
+//        version {
+//            strictly "6.5.3.Final"
+//        }
+//        because "whatever reason why it doesn't work on other versions"
+//    }
+
+    implementation "org.projectlombok:lombok:${lombokVersion}"
 	annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 	annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
