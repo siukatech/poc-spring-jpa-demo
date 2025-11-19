@@ -27,7 +27,7 @@ public class ChildOneLjfEntity extends ChildBaseLjfEntity {
 //    private String name;
 //
 //    @ManyToOne
-//    @JoinColumn(name = "parent_id", referencedColumnName = "sid")
+//    @JoinColumn(name = "parent_sid", referencedColumnName = "sid")
 //    private ParentLjfEntity parentLjfEntity;
 
 }

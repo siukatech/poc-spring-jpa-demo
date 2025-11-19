@@ -10,10 +10,10 @@ import org.hibernate.annotations.SoftDelete;
 @Slf4j
 @Setter
 @Getter
-@ToString(exclude = {"parentLjfdEntity"})
-//@Entity
-@SoftDelete(columnName = "is_deleted")
 @MappedSuperclass
+@ToString(exclude = {"parentLjfdEntity"})
+@SoftDelete(columnName = "is_deleted")
+//@Entity
 public abstract class ChildBaseLjfdEntity {
 //
 //    @Id
@@ -29,11 +29,11 @@ public abstract class ChildBaseLjfdEntity {
     @Column
     private String name;
 
-    @Column(name = "parent_id", insertable = false, updatable = false)
-    private String parentId;
+    @Column(name = "parent_sid", insertable = false, updatable = false)
+    private String parentSid;
 
     @ManyToOne
-    @JoinColumn(name = "parent_id", referencedColumnName = "sid")
+    @JoinColumn(name = "parent_sid", referencedColumnName = "sid")
     private ParentLjfdEntity parentLjfdEntity;
 
 }

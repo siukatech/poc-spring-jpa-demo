@@ -28,11 +28,11 @@ public abstract class ChildBaseLjfEntity {
     @Column
     private String name;
 
-    @Column(name = "parent_id", insertable = false, updatable = false)
-    private String parentId;
+    @Column(name = "parent_sid", insertable = false, updatable = false)
+    private String parentSid;
 
     @ManyToOne
-    @JoinColumn(name = "parent_id", referencedColumnName = "sid")
+    @JoinColumn(name = "parent_sid", referencedColumnName = "sid")
     private ParentLjfEntity parentLjfEntity;
 
 }

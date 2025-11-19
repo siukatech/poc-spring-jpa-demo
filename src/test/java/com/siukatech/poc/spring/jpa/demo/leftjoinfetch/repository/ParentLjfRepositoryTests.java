@@ -122,7 +122,7 @@ public class ParentLjfRepositoryTests {
 ////////                    return criteriaBuilder.equal(root.get("parentLjfEntity").get("sid"), delEntity.getSid());
 //////                    Join<ChildOneLjfEntity, ParentLjfEntity> join = root.join("parentLjfEntity");
 //////                    return criteriaBuilder.equal(join.get("sid"), delEntity.getSid());
-////                    return criteriaBuilder.equal(root.get("parentId"), delEntity.getSid());
+////                    return criteriaBuilder.equal(root.get("parentSid"), delEntity.getSid());
 //                    return criteriaBuilder.equal(root.get("parentLjfEntity"), delPair);
                     return criteriaBuilder.equal(root.get("id"), delPair.getValue1().getId());
                 }
@@ -134,7 +134,7 @@ public class ParentLjfRepositoryTests {
 ////////                    return criteriaBuilder.equal(root.get("parentLjfEntity").get("sid"), delEntity.getSid());
 //////                    Join<ChildTwoLjfEntity, ParentLjfEntity> join = root.join("parentLjfEntity");
 //////                    return criteriaBuilder.equal(join.get("sid"), delEntity.getSid());
-////                    return criteriaBuilder.equal(root.get("parentId"), delEntity.getSid());
+////                    return criteriaBuilder.equal(root.get("parentSid"), delEntity.getSid());
 //                    return criteriaBuilder.equal(root.get("parentLjfEntity"), delPair);
                     return criteriaBuilder.equal(root.get("id"), delPair.getValue1().getId());
                 }
@@ -146,7 +146,7 @@ public class ParentLjfRepositoryTests {
 ////////                    return criteriaBuilder.equal(root.get("parentLjfEntity").get("sid"), delEntity.getSid());
 //////                    Join<ChildThreeLjfEntity, ParentLjfEntity> join = root.join("parentLjfEntity");
 //////                    return criteriaBuilder.equal(join.get("sid"), delEntity.getSid());
-////                    return criteriaBuilder.equal(root.get("parentId"), delEntity.getSid());
+////                    return criteriaBuilder.equal(root.get("parentSid"), delEntity.getSid());
 //                    return criteriaBuilder.equal(root.get("parentLjfEntity"), delPair);
                     return criteriaBuilder.equal(root.get("id"), delPair.getValue1().getId());
                 }
@@ -161,18 +161,18 @@ public class ParentLjfRepositoryTests {
     public void test_leftJoinFetch_basic() {
         log.info("test_leftJoinFetch_basic - start");
 
-//        // select cole1_0.id,cole1_0.name,cole1_0.parent_id,cole1_0.version from tbl_ljf_child_one cole1_0
+//        // select cole1_0.id,cole1_0.name,cole1_0.parent_sid,cole1_0.version from tbl_ljf_child_one cole1_0
 //        List<ChildOneLjfEntity> childOneLjfEntityList = this.childOneLjfRepository.findAll();
 //        log.info("test_leftJoinFetch_basic - childOneLjfEntityList.size: [{}]", childOneLjfEntityList.size());
 //        childOneLjfEntityList.forEach(e -> {
 //            log.info("test_leftJoinFetch_basic - childOneLjfEntityList - e: [{}]", e.toString());
 //        });
 //
-//        // select ctle1_0.id,ctle1_0.name,ctle1_0.parent_id,ctle1_0.version from tbl_ljf_child_two ctle1_0
+//        // select ctle1_0.id,ctle1_0.name,ctle1_0.parent_sid,ctle1_0.version from tbl_ljf_child_two ctle1_0
 //        List<ChildTwoLjfEntity> childTwoLjfEntityList = this.childTwoLjfRepository.findAll();
 //        log.info("test_leftJoinFetch_basic - childTwoLjfEntityList.size: [{}]", childTwoLjfEntityList.size());
 //
-//        // select ctle1_0.id,ctle1_0.name,ctle1_0.parent_id,ctle1_0.version from tbl_ljf_child_three ctle1_0
+//        // select ctle1_0.id,ctle1_0.name,ctle1_0.parent_sid,ctle1_0.version from tbl_ljf_child_three ctle1_0
 //        List<ChildThreeLjfEntity> childThreeLjfEntityList = this.childThreeLjfRepository.findAll();
 //        log.info("test_leftJoinFetch_basic - childThreeLjfEntityList.size: [{}]", childThreeLjfEntityList.size());
 

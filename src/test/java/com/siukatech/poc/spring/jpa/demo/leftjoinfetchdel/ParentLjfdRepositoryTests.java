@@ -16,9 +16,14 @@ import org.junit.jupiter.api.TestInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.*;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Slf4j
 @DataJpaTest
@@ -116,7 +121,7 @@ public class ParentLjfdRepositoryTests {
 ////////                    return criteriaBuilder.equal(root.get("parentLjfdEntity").get("sid"), delEntity.getSid());
 //////                    Join<ChildOneLjfdEntity, ParentLjfdEntity> join = root.join("parentLjfdEntity");
 //////                    return criteriaBuilder.equal(join.get("sid"), delEntity.getSid());
-////                    return criteriaBuilder.equal(root.get("parentId"), delEntity.getSid());
+////                    return criteriaBuilder.equal(root.get("parentSid"), delEntity.getSid());
 //                    return criteriaBuilder.equal(root.get("parentLjfdEntity"), delPair);
                     return criteriaBuilder.equal(root.get("id"), delPair.getValue1().getId());
                 }
@@ -128,7 +133,7 @@ public class ParentLjfdRepositoryTests {
 ////////                    return criteriaBuilder.equal(root.get("parentLjfdEntity").get("sid"), delEntity.getSid());
 //////                    Join<ChildTwoLjfdEntity, ParentLjfdEntity> join = root.join("parentLjfdEntity");
 //////                    return criteriaBuilder.equal(join.get("sid"), delEntity.getSid());
-////                    return criteriaBuilder.equal(root.get("parentId"), delEntity.getSid());
+////                    return criteriaBuilder.equal(root.get("parentSid"), delEntity.getSid());
 //                    return criteriaBuilder.equal(root.get("parentLjfdEntity"), delPair);
                     return criteriaBuilder.equal(root.get("id"), delPair.getValue1().getId());
                 }
@@ -140,7 +145,7 @@ public class ParentLjfdRepositoryTests {
 ////////                    return criteriaBuilder.equal(root.get("parentLjfdEntity").get("sid"), delEntity.getSid());
 //////                    Join<ChildThreeLjfdEntity, ParentLjfdEntity> join = root.join("parentLjfdEntity");
 //////                    return criteriaBuilder.equal(join.get("sid"), delEntity.getSid());
-////                    return criteriaBuilder.equal(root.get("parentId"), delEntity.getSid());
+////                    return criteriaBuilder.equal(root.get("parentSid"), delEntity.getSid());
 //                    return criteriaBuilder.equal(root.get("parentLjfdEntity"), delPair);
                     return criteriaBuilder.equal(root.get("id"), delPair.getValue1().getId());
                 }
@@ -155,18 +160,21 @@ public class ParentLjfdRepositoryTests {
     public void test_leftJoinFetchDel_basic() {
         log.info("test_leftJoinFetchDel_basic - start");
 
-//        // select cole1_0.id,cole1_0.name,cole1_0.parent_id,cole1_0.version from tbl_ljf_child_one cole1_0
+//        JpaObjectRetrievalFailureException exception = assertThrows(JpaObjectRetrievalFailureException.class, () -> {
+        Exception exception = assertThrows(Exception.class, () -> {
+
+//        // select cole1_0.id,cole1_0.name,cole1_0.parent_sid,cole1_0.version from tbl_ljf_child_one cole1_0
 //        List<ChildOneLjfdEntity> childOneLjfdEntityList = this.childOneLjfdRepository.findAll();
 //        log.info("test_leftJoinFetchDel_basic - childOneLjfdEntityList.size: [{}]", childOneLjfdEntityList.size());
 //        childOneLjfdEntityList.forEach(e -> {
 //            log.info("test_leftJoinFetchDel_basic - childOneLjfdEntityList - e: [{}]", e.toString());
 //        });
 //
-//        // select ctle1_0.id,ctle1_0.name,ctle1_0.parent_id,ctle1_0.version from tbl_ljf_child_two ctle1_0
+//        // select ctle1_0.id,ctle1_0.name,ctle1_0.parent_sid,ctle1_0.version from tbl_ljf_child_two ctle1_0
 //        List<ChildTwoLjfdEntity> childTwoLjfdEntityList = this.childTwoLjfdRepository.findAll();
 //        log.info("test_leftJoinFetchDel_basic - childTwoLjfdEntityList.size: [{}]", childTwoLjfdEntityList.size());
 //
-//        // select ctle1_0.id,ctle1_0.name,ctle1_0.parent_id,ctle1_0.version from tbl_ljf_child_three ctle1_0
+//        // select ctle1_0.id,ctle1_0.name,ctle1_0.parent_sid,ctle1_0.version from tbl_ljf_child_three ctle1_0
 //        List<ChildThreeLjfdEntity> childThreeLjfdEntityList = this.childThreeLjfdRepository.findAll();
 //        log.info("test_leftJoinFetchDel_basic - childThreeLjfdEntityList.size: [{}]", childThreeLjfdEntityList.size());
 
@@ -176,6 +184,9 @@ public class ParentLjfdRepositoryTests {
         parentLjfdEntityList.forEach(e -> {
             log.info("test_leftJoinFetchDel_basic - parentLjfdEntityList - e: [{}]", e.toString());
         });
+
+        });
+        assertThat(exception.getMessage()).contains("with identifier value");
 
         log.info("test_leftJoinFetchDel_basic - end");
     }
