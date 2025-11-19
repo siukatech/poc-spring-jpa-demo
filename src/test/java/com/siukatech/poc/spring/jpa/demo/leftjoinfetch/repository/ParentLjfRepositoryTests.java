@@ -1,20 +1,24 @@
 package com.siukatech.poc.spring.jpa.demo.leftjoinfetch.repository;
 
-import com.siukatech.poc.spring.jpa.demo.leftjoinfetch.entity.ChildOneLjfEntity;
-import com.siukatech.poc.spring.jpa.demo.leftjoinfetch.entity.ChildThreeLjfEntity;
-import com.siukatech.poc.spring.jpa.demo.leftjoinfetch.entity.ChildTwoLjfEntity;
-import com.siukatech.poc.spring.jpa.demo.leftjoinfetch.entity.ParentLjfEntity;
+import com.siukatech.poc.spring.jpa.demo.leftjoinfetch.entity.*;
+import com.siukatech.poc.spring.jpa.demo.leftjoinfetchdel.entity.*;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import lombok.extern.slf4j.Slf4j;
+import org.javatuples.Pair;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.TestPropertySource;
 
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @DataJpaTest
@@ -44,6 +48,8 @@ public class ParentLjfRepositoryTests {
     @Autowired
     private ChildThreeLjfRepository childThreeLjfRepository;
 
+    private final Random random = new Random();
+
     @BeforeEach
     public void setup(TestInfo testInfo) {
         log.info("setup - testInfo: [{}]", testInfo);
@@ -57,9 +63,9 @@ public class ParentLjfRepositoryTests {
     }
 
     private void prepare_parentLjfEntity_basic() {
-        int size = 0;
-        size = 10;
-        for (int i=0; i<size; i++) {
+        int recSize = 10;
+        List<Pair<ParentLjfEntity, ChildBaseLjfEntity>> pairList = new ArrayList<>();
+        for (int i=0; i<recSize; i++) {
             int s = i + 1;
             String sid = "sid-%s".formatted(s);
             ParentLjfEntity parentLjfEntityDraft = new ParentLjfEntity();
@@ -67,35 +73,86 @@ public class ParentLjfRepositoryTests {
             parentLjfEntityDraft.setName(sid);
             ParentLjfEntity parentLjfEntitySaved = this.parentLjfRepository.save(parentLjfEntityDraft);
             log.info("prepare_parentLjfEntity_basic - parentLjfEntitySaved: [{}]", parentLjfEntitySaved);
+            ChildBaseLjfEntity childBaseLjfEntitySaved;
             if (s % 2 == 0) {
                 ChildTwoLjfEntity childTwoLjfEntity2 = new ChildTwoLjfEntity();
                 childTwoLjfEntity2.setName(sid);
                 childTwoLjfEntity2.setParentLjfEntity(parentLjfEntitySaved);
-                this.childTwoLjfRepository.save(childTwoLjfEntity2);
-                parentLjfEntitySaved.setChildTwoLjfEntity(childTwoLjfEntity2);
-                parentLjfEntitySaved = this.parentLjfRepository.save(parentLjfEntitySaved);
+                childBaseLjfEntitySaved = this.childTwoLjfRepository.save(childTwoLjfEntity2);
+//                parentLjfEntitySaved.setChildTwoLjfEntity(childTwoLjfEntity2);
+//                parentLjfEntitySaved = this.parentLjfRepository.save(parentLjfEntitySaved);
             }
             else if (s % 3 == 0) {
                 ChildThreeLjfEntity childThreeLjfEntity3 = new ChildThreeLjfEntity();
                 childThreeLjfEntity3.setName(sid);
                 childThreeLjfEntity3.setParentLjfEntity(parentLjfEntitySaved);
-                this.childThreeLjfRepository.save(childThreeLjfEntity3);
-                parentLjfEntitySaved.setChildThreeLjfEntity(childThreeLjfEntity3);
-                parentLjfEntitySaved = this.parentLjfRepository.save(parentLjfEntitySaved);
+                childBaseLjfEntitySaved = this.childThreeLjfRepository.save(childThreeLjfEntity3);
+//                parentLjfEntitySaved.setChildThreeLjfEntity(childThreeLjfEntity3);
+//                parentLjfEntitySaved = this.parentLjfRepository.save(parentLjfEntitySaved);
             }
             else {
                 ChildOneLjfEntity childOneLjfEntity1 = new ChildOneLjfEntity();
                 childOneLjfEntity1.setName(sid);
                 childOneLjfEntity1.setParentLjfEntity(parentLjfEntitySaved);
-                this.childOneLjfRepository.save(childOneLjfEntity1);
-                parentLjfEntitySaved.setChildOneLjfEntity(childOneLjfEntity1);
-                parentLjfEntitySaved = this.parentLjfRepository.save(parentLjfEntitySaved);
+                childBaseLjfEntitySaved = this.childOneLjfRepository.save(childOneLjfEntity1);
+//                parentLjfEntitySaved.setChildOneLjfEntity(childOneLjfEntity1);
+//                parentLjfEntitySaved = this.parentLjfRepository.save(parentLjfEntitySaved);
             }
+            pairList.add(Pair.with(parentLjfEntitySaved, childBaseLjfEntitySaved));
         }
 //        this.parentLjfRepository.flush();
 //        this.childOneLjfRepository.flush();
 //        this.childTwoLjfRepository.flush();
 //        this.childThreeLjfRepository.flush();
+        this.entityManager.flush();
+        this.entityManager.clear();
+        //
+        int delSize = random.nextInt(1, Math.round(((float) pairList.size() / 3)));
+        Set<Pair<ParentLjfEntity, ChildBaseLjfEntity>> delPairSet = new HashSet<>();
+        for (int i=0; i<delSize; i++) {
+            int delIndex = random.nextInt(0, pairList.size());
+            Pair<ParentLjfEntity, ChildBaseLjfEntity> delPair = pairList.get(delIndex);
+            delPairSet.add(delPair);
+        }
+        delPairSet.forEach(delPair -> {
+            this.childOneLjfRepository.delete(new Specification<ChildOneLjfEntity>() {
+                @Override
+                public Predicate toPredicate(Root<ChildOneLjfEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                    log.info("prepare_parentLjfEntity_basic - childOneLjfRepository - toPredicate - value1.getId: [{}]", delPair.getValue1().getId());
+////////                    return criteriaBuilder.equal(root.get("parentLjfEntity").get("sid"), delEntity.getSid());
+//////                    Join<ChildOneLjfEntity, ParentLjfEntity> join = root.join("parentLjfEntity");
+//////                    return criteriaBuilder.equal(join.get("sid"), delEntity.getSid());
+////                    return criteriaBuilder.equal(root.get("parentId"), delEntity.getSid());
+//                    return criteriaBuilder.equal(root.get("parentLjfEntity"), delPair);
+                    return criteriaBuilder.equal(root.get("id"), delPair.getValue1().getId());
+                }
+            });
+            this.childTwoLjfRepository.delete(new Specification<ChildTwoLjfEntity>() {
+                @Override
+                public Predicate toPredicate(Root<ChildTwoLjfEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                    log.info("prepare_parentLjfEntity_basic - childTwoLjfRepository - toPredicate - value1.getId: [{}]", delPair.getValue1().getId());
+////////                    return criteriaBuilder.equal(root.get("parentLjfEntity").get("sid"), delEntity.getSid());
+//////                    Join<ChildTwoLjfEntity, ParentLjfEntity> join = root.join("parentLjfEntity");
+//////                    return criteriaBuilder.equal(join.get("sid"), delEntity.getSid());
+////                    return criteriaBuilder.equal(root.get("parentId"), delEntity.getSid());
+//                    return criteriaBuilder.equal(root.get("parentLjfEntity"), delPair);
+                    return criteriaBuilder.equal(root.get("id"), delPair.getValue1().getId());
+                }
+            });
+            this.childThreeLjfRepository.delete(new Specification<ChildThreeLjfEntity>() {
+                @Override
+                public Predicate toPredicate(Root<ChildThreeLjfEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                    log.info("prepare_parentLjfEntity_basic - childThreeLjfRepository - toPredicate - value1.getId: [{}]", delPair.getValue1().getId());
+////////                    return criteriaBuilder.equal(root.get("parentLjfEntity").get("sid"), delEntity.getSid());
+//////                    Join<ChildThreeLjfEntity, ParentLjfEntity> join = root.join("parentLjfEntity");
+//////                    return criteriaBuilder.equal(join.get("sid"), delEntity.getSid());
+////                    return criteriaBuilder.equal(root.get("parentId"), delEntity.getSid());
+//                    return criteriaBuilder.equal(root.get("parentLjfEntity"), delPair);
+                    return criteriaBuilder.equal(root.get("id"), delPair.getValue1().getId());
+                }
+            });
+            this.parentLjfRepository.deleteById(delPair.getValue0().getId());
+        });
         this.entityManager.flush();
         this.entityManager.clear();
     }

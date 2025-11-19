@@ -1,4 +1,4 @@
-package com.siukatech.poc.spring.jpa.demo.leftjoinfetch.entity;
+package com.siukatech.poc.spring.jpa.demo.leftjoinfetchdel.entity;
 
 
 import jakarta.persistence.*;
@@ -9,11 +9,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Setter
 @Getter
-//@ToString(exclude = {"parentLjfEntity"})
+//@ToString(exclude = {"parentLjfdEntity"})
 ////@ToString
 @Entity
-@Table(name = "tbl_ljf_child_two")
-public class ChildTwoLjfEntity extends ChildBaseLjfEntity {
+@Table(name = "tbl_ljfd_child_two")
+//@SoftDelete(columnName = "is_deleted")
+public class ChildTwoLjfdEntity extends ChildBaseLjfdEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -26,8 +27,11 @@ public class ChildTwoLjfEntity extends ChildBaseLjfEntity {
 //    @Column
 //    private String name;
 //
+//    @Column(name = "parent_id", insertable = false, updatable = false)
+//    private String parentId;
+//
 //    @ManyToOne
 //    @JoinColumn(name = "parent_id", referencedColumnName = "sid")
-//    private ParentLjfEntity parentLjfEntity;
+//    private ParentLjfdEntity parentLjfdEntity;
 
 }
