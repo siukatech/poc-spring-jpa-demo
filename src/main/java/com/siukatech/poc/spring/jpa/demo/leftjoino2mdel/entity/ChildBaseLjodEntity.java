@@ -24,11 +24,11 @@ public abstract class ChildBaseLjodEntity {
     @Column
     private String name;
 
-    @Column(name = "parent_id", insertable = false, updatable = false)
-    private Long parentId;
+    @Column(name = "parent_sid", insertable = false, updatable = false)
+    private String parentSid;
 
     @ManyToOne
-    @JoinColumn(name = "parent_id", referencedColumnName = "id")
+    @JoinColumn(name = "parent_sid", referencedColumnName = "sid")
     private ParentLjodEntity parentLjodEntity;
 
 }

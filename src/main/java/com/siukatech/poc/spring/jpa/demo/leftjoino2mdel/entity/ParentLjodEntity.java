@@ -7,6 +7,9 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.SoftDelete;
 
+import java.util.List;
+import java.util.Objects;
+
 @Slf4j
 @Setter
 @Getter
@@ -35,13 +38,25 @@ public class ParentLjodEntity {
     @Column
     private String name;
 
-    @OneToOne(mappedBy = "parentLjodEntity", fetch = FetchType.EAGER)
-    private ChildOneLjodEntity childOneLjodEntity;
+    @Column
+    private String sid;
 
-    @OneToOne(mappedBy = "parentLjodEntity", fetch = FetchType.EAGER)
-    private ChildTwoLjodEntity childTwoLjodEntity;
+    @OneToMany(mappedBy = "sid", fetch = FetchType.EAGER)
+    private List<ChildOneLjodEntity> childOneLjodEntityList;
+    private ChildOneLjodEntity getChildOneLjodEntityList() {
+        return Objects.nonNull(childOneLjodEntityList)?childOneLjodEntityList.getFirst():null;
+    }
 
-    @OneToOne(mappedBy = "parentLjodEntity", fetch = FetchType.EAGER)
-    private ChildThreeLjodEntity childThreeLjodEntity;
+    @OneToMany(mappedBy = "sid", fetch = FetchType.EAGER)
+    private List<ChildTwoLjodEntity> childTwoLjodEntityList;
+    private ChildTwoLjodEntity getChildTwoLjodEntityList() {
+        return Objects.nonNull(childTwoLjodEntityList)?childTwoLjodEntityList.getFirst():null;
+    }
+
+    @OneToMany(mappedBy = "sid", fetch = FetchType.EAGER)
+    private List<ChildThreeLjodEntity> childThreeLjodEntityList;
+    private ChildThreeLjodEntity getChildThreeLjodEntityList() {
+        return Objects.nonNull(childThreeLjodEntityList)?childThreeLjodEntityList.getFirst():null;
+    }
 
 }
