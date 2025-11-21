@@ -1,10 +1,6 @@
-package com.siukatech.poc.spring.jpa.demo.leftjoiniddel;
+package com.siukatech.poc.spring.jpa.demo.leftjoiniddel.repository;
 
 import com.siukatech.poc.spring.jpa.demo.leftjoiniddel.entity.*;
-import com.siukatech.poc.spring.jpa.demo.leftjoiniddel.repository.ChildOneLjidRepository;
-import com.siukatech.poc.spring.jpa.demo.leftjoiniddel.repository.ChildThreeLjidRepository;
-import com.siukatech.poc.spring.jpa.demo.leftjoiniddel.repository.ChildTwoLjidRepository;
-import com.siukatech.poc.spring.jpa.demo.leftjoiniddel.repository.ParentLjidRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -19,7 +15,6 @@ import org.junit.jupiter.api.TestInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.test.context.TestPropertySource;
 
 import java.util.*;
