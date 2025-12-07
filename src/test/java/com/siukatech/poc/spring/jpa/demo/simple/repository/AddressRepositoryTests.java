@@ -2,8 +2,6 @@ package com.siukatech.poc.spring.jpa.demo.simple.repository;
 
 import com.siukatech.poc.spring.jpa.demo.simple.entity.AddressEntity;
 import com.siukatech.poc.spring.jpa.demo.simple.entity.UserEntity;
-import com.siukatech.poc.spring.jpa.demo.simple.repository.AddressRepository;
-import com.siukatech.poc.spring.jpa.demo.simple.repository.UserRepository;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
@@ -11,19 +9,19 @@ import jakarta.persistence.criteria.Subquery;
 import lombok.extern.slf4j.Slf4j;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.*;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 @Slf4j
 @DataJpaTest
@@ -43,6 +41,9 @@ public class AddressRepositoryTests {
 
     @Autowired
     private AddressRepository addressRepository;
+
+    @MockitoBean
+    private UserRepository userRepositoryMock;
 
     @BeforeEach
     public void setup(TestInfo testInfo) {
@@ -221,6 +222,27 @@ public class AddressRepositoryTests {
 
         // then
         assertThat(userEntityList.size()).isEqualTo(3);
+
+    }
+
+    @Test
+    public void test_userSpec_basic_with_ArgumentMatchers_generic_any() {
+        // given
+        UserEntity userForm1 = new UserEntity();
+        userForm1.setUserId("userId1");
+        userForm1.setName("userName1");
+        List<UserEntity> userEntityListMock = Arrays.asList(userForm1);
+        when(this.userRepositoryMock.findAll(ArgumentMatchers.<Specification<UserEntity>>any())).thenReturn(userEntityListMock);
+
+        // when
+        Specification<UserEntity> userSpec = this.getUserSpec("line 2");
+        List<UserEntity> userEntityList = this.userRepository.findAll(userSpec);
+        log.debug("test_userSpec_basic_with_ArgumentMatchers_generic_any - userEntityList.size: [{}]", userEntityList.size());
+
+        // then
+        log.debug("test_userSpec_basic_with_ArgumentMatchers_generic_any - userEntityListMock.size: [{}]", userEntityListMock.size());
+        assertThat(userEntityListMock.size()).isEqualTo(1);
+        assertThat(userEntityList.size()).isEqualTo(1);
 
     }
 
