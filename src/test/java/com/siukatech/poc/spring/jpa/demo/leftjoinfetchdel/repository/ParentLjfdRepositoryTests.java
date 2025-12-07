@@ -145,7 +145,9 @@ public class ParentLjfdRepositoryTests {
                     return criteriaBuilder.equal(root.get("id"), delPair.getValue1().getId());
                 }
             });
-            this.parentLjfdRepository.deleteById(delPair.getValue0().getId());
+//            this.parentLjfdRepository.deleteById(delPair.getValue0().getId());
+////            Optional<ParentLjfdEntity> parentLjfdEntityDeleted = this.parentLjfdRepository.findById(delPair.getValue0().getId());
+////            log.info("prepare_parentLjfdEntity_basic - parentLjfdEntityDeleted: [{}]", parentLjfdEntityDeleted);
         });
         this.entityManager.flush();
         this.entityManager.clear();
@@ -181,6 +183,7 @@ public class ParentLjfdRepositoryTests {
         });
 
         });
+        log.error("test_leftJoinFetchDel_basic - exception.getMessage: [{}]", exception.getMessage(), exception.fillInStackTrace());
         assertThat(exception.getMessage()).contains("with identifier value");
 
         log.info("test_leftJoinFetchDel_basic - end");

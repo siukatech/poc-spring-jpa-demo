@@ -1,5 +1,6 @@
 package com.siukatech.poc.spring.jpa.demo.leftjoiniddel.repository;
 
+import com.siukatech.poc.spring.jpa.demo.leftjoinfetchdel.entity.ParentLjfdEntity;
 import com.siukatech.poc.spring.jpa.demo.leftjoiniddel.entity.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -127,7 +128,9 @@ public class ParentLjidRepositoryTests {
                     return criteriaBuilder.equal(root.get("id"), delPair.getValue1().getId());
                 }
             });
-            this.parentLjidRepository.deleteById(delPair.getValue0().getId());
+//            this.parentLjidRepository.deleteById(delPair.getValue0().getId());
+////            Optional<ParentLjidEntity> parentLjidEntityDeleted = this.parentLjidRepository.findById(delPair.getValue0().getId());
+////            log.info("prepare_parentLjidEntity_basic - parentLjidEntityDeleted: [{}]", parentLjidEntityDeleted);
         });
         this.entityManager.flush();
         this.entityManager.clear();
@@ -148,6 +151,7 @@ public class ParentLjidRepositoryTests {
         });
 
         });
+        log.error("test_leftJoinIdDel_basic - exception.getMessage: [{}]", exception.getMessage(), exception.fillInStackTrace());
         assertThat(exception.getMessage()).contains("with identifier value");
 
         log.info("test_leftJoinIdDel_basic - end");
